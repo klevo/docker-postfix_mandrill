@@ -3,6 +3,9 @@ set -eu
 
 sed -i "s/^\(myhostname =\).*/\1 $POSTFIX_FQDN/" /etc/postfix/main.cf
 
+echo "[smtp.mandrillapp.com]:587 $MANDRILL_USERNAME:$MANDRILL_API_KEY" > /etc/postfix/sasl_passwd
+postmap /etc/postfix/sasl_passwd
+
 service postfix restart
 
 # TODO: replace this later with something more useful
