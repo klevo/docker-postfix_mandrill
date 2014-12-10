@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo " -> Removing docker images"
+docker rm -f postfix_mandrill
+
+echo " -> Rebuilding the image from current directory"
+docker build -t klevo/postfix_mandrill .
+#
+# echo " -> Ensuring mysql container is running"
+# docker start mysql
+
+echo " -> Run the new container"
+docker run -d --name postfix_mandrill \
+  -e POSTFIX_FQDN=klevo.sk \
+  klevo/postfix_mandrill
+
+echo " -> Done."
+docker ps
+
+docker exec -i -t postfix_mandrill /bin/bash
