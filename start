@@ -1,7 +1,14 @@
 #!/bin/bash
 set -eu
 
+# Postfix configuration according to: https://www.linode.com/docs/email/postfix/postfix-smtp-debian7
 sed -i "s/^\(myhostname =\).*/\1 $POSTFIX_FQDN/" /etc/postfix/main.cf
+sed -i "s/^\(relayhost =\).*/\1 \[smtp\.mandrillapp\.com\]:587/" /etc/postfix/main.cf
+sed -i "s/^\(smtp_sasl_auth_enable =\).*/\1 yes/" /etc/postfix/main.cf
+sed -i "s/^\(smtp_sasl_security_options =\).*/\1 noanonymous/" /etc/postfix/main.cf
+sed -i "s/^\(smtp_sasl_password_maps =\).*/\1 hash:\/etc\/postfix\/sasl_passwd/" /etc/postfix/main.cf
+sed -i "s/^\(smtp_use_tls =\).*/\1 yes/" /etc/postfix/main.cf
+sed -i "s/^\(smtp_tls_CAfile =\).*/\1 \/etc\/ssl\/certs\/ca-certificates.crt/" /etc/postfix/main.cf
 
 echo "[smtp.mandrillapp.com]:587 $MANDRILL_USERNAME:$MANDRILL_API_KEY" > /etc/postfix/sasl_passwd
 postmap /etc/postfix/sasl_passwd
