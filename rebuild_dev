@@ -12,8 +12,8 @@ docker build -t klevo/postfix_mandrill .
 echo " -> Run the new container"
 docker run -d --name postfix_mandrill \
   -e POSTFIX_FQDN=klevo.sk \
-  -e MANDRILL_USERNAME=myname \
-  -e MANDRILL_API_KEY=mykey \
+  -e MANDRILL_USERNAME=$MANDRILL_USERNAME \
+  -e MANDRILL_API_KEY=$MANDRILL_API_KEY \
   klevo/postfix_mandrill
 
 echo " -> Done."
