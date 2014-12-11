@@ -3,6 +3,8 @@ set -eu
 
 # Postfix configuration according to: https://www.linode.com/docs/email/postfix/postfix-smtp-debian7
 sed -i "s/^\(myhostname =\).*/\1 $POSTFIX_FQDN/" /etc/postfix/main.cf
+sed -i "s/^\(mydomain =\).*/\1 $POSTFIX_FQDN/" /etc/postfix/main.cf
+sed -i "s/^\(mydestination =\).*/\1 $POSTFIX_FQDN, $HOSTNAME, localhost\.localdomain, localhost/" /etc/postfix/main.cf
 
 echo "[smtp.mandrillapp.com]:587 $MANDRILL_USERNAME:$MANDRILL_API_KEY" > /etc/postfix/sasl_passwd
 postmap /etc/postfix/sasl_passwd
